@@ -1,0 +1,14 @@
+{
+  "theme": "default",
+  "components": {
+    "directory": "components",
+    "installed": [
+      "button",
+      "icon",
+      "card",
+      "text area",
+      "text input",
+      "star rating"
+    ]
+  }
+}
