@@ -6,13 +6,12 @@ import MainView from "../components/MainView";
 import {useAuth} from "../contexts/AuthContext";
 import {Button} from "../components/button";
 import {defaultText} from "../assets/styles/default";
-import {useCallback, useState} from "react";
+import {useState} from "react";
 import Overlay from "../components/Overlay";
-import {t} from "../lib/utils";
 
 export default function SettingModal() {
 
-    const router = useNavigation()
+    const nav = useNavigation()
 
     const {logout, isSignedIn} = useAuth()
     const {t} = useTranslation()
@@ -20,8 +19,11 @@ export default function SettingModal() {
 
     const logOutClickedHandler = () => {
         setShowOverlay(true)
-        logout(setShowOverlay)
-        router.navigate("login")
+        logout(setShowOverlay).then(() => {
+            setShowOverlay(false)
+            // nav.navigate("login")
+        })
+
     }
 
     return (
@@ -58,7 +60,7 @@ export default function SettingModal() {
                     </View>
                 </View>
                 <View style={{marginBottom: 40}}>
-                    <Button variant={"info"} onPress={() => router.goBack()}>
+                    <Button variant={"info"} onPress={() => nav.goBack()}>
                         {t("Close")}
                     </Button>
                 </View>

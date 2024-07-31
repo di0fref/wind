@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import api from "../lib/http-common";
+import {api} from "../lib/http-common";
 import {getSecureData, removeSecureData, setSecureData} from "@/lib/utils";
 
 
@@ -13,10 +13,6 @@ export const AuthProvider = ({children}) => {
     const [stage, setStage] = useState("");
     const [isSelectingRole, setIsSelectingRole] = useState(false)
     const [isSignedIn, setIsSignedIn] = useState(false)
-
-    useEffect(() => {
-
-    }, [role]);
 
 
     const setSelectingRole = (val) => {
@@ -125,7 +121,13 @@ export const AuthProvider = ({children}) => {
     const removeUser = async () => {
         removeSecureData("token")
         removeSecureData("user")
+        removeSecureData("role")
+        setStage("")
+        setRole("")
+        setToken("")
+        setUser({})
         setIsSignedIn(false)
+        setIsSelectingRole(false)
         setStage("")
     }
 

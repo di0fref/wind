@@ -3,7 +3,7 @@ import MainView from "../../components/MainView";
 import {Button} from "@/components/button";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext";
-import api from "../../lib/http-common";
+import {api} from "../../lib/http-common";
 import {defaultText} from "../../assets/styles/default";
 import Camera from "../../components/Camera";
 import {useCameraPermissions} from "expo-camera";
@@ -14,7 +14,7 @@ import {useTranslation} from "react-i18next";
 
 export default function HomeScreen() {
 
-    const {user, role} = useAuth()
+    const {user, role, isSignedIn, me} = useAuth()
     const [showCamera, setShowCamera] = useState(false);
     const [permission, requestPermission] = useCameraPermissions();
 
@@ -34,13 +34,16 @@ export default function HomeScreen() {
         console.log(JSON.stringify("Home", null, 2))
     }, []);
 
-    const QRScanned = (result) => {
+    useEffect(() => {
+        console.log("Stage change: ", user.stage)
+    }, [user.stage]);
 
+    const QRScanned = (result) => {
         try {
             api.post('/api/qrscanned', {house_id: 1})
                 .then((res) => {
+                    me()
                     nav.navigate("checkin")
-                    console.log(JSON.stringify(res.data, null, 2))
                 }).catch((error) => {
                 console.log(JSON.stringify(error.response, null, 2));
             })
@@ -100,7 +103,7 @@ export default function HomeScreen() {
                 </MainView>
 
             )
-        } else {
+        } else if (user.stage === undefined || user.stage === "checked_out") {
             return (
                 <MainView>
                     <View className={"absolute items-center m-auto left-1/2 right-1/2 top-16 bottom-0"}>
@@ -120,6 +123,20 @@ export default function HomeScreen() {
                                 {t("Open Camera")}
                             </Button>
                         </View>
+                    </View>
+                </MainView>
+            )
+        } else {
+            return (
+                <MainView>
+                    <View className={"absolute items-center m-auto left-1/2 right-1/2 top-16 bottom-0"}>
+                        <Image style={{opacity: 0.6}} source={require('../../assets/images/icon.png')}/>
+                    </View>
+                    <View className={"flex-1 justify-center"}>
+                        <Text className={`${defaultText} font-black text-2xl text-center mb-2`}>Hello there.</Text>
+                        <Text className={`${defaultText} text-center mb-6`}>Please click on the button below to start the check in process.</Text>
+
+                        <Button variant={"info"} onPress={() => nav.navigate("checkin")}>Start Check-In</Button>
                     </View>
                 </MainView>
             )

@@ -59,7 +59,7 @@ export default function RootLayout() {
                     <Stack.Screen name="roleselector" options={{headerTitle: "Select role", presentation: "modal", headerShown: true}}/>
                     <Stack.Screen name="modalticket" options={{
                         headerBackTitle: t("Back"),
-                        headerTitle: "Ticket",
+                        headerTitle: t("Ticket"),
                         _presentation: "modal",
                         headerShown: true,
                         headerRight:  () => (

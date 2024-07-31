@@ -1,7 +1,7 @@
 import {useColorScheme, View, Text} from "react-native";
 import {Fragment, useEffect, useState} from "react";
 import {useNavigation} from "@react-navigation/native";
-import api from "../lib/http-common";
+import {api} from "../lib/http-common";
 import {useAuth} from "../contexts/AuthContext";
 import Stepper from "./Stepper";
 import MainView from "./MainView";

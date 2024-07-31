@@ -3,8 +3,9 @@ import {SafeAreaView, ScrollView, View, Text} from 'react-native'
 import Overlay from "./Overlay";
 import {defaultText} from "../assets/styles/default";
 import {useAuth} from "../contexts/AuthContext";
-import {useTheme} from "@react-navigation/native";
+import {useFocusEffect, useTheme} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
+import {useCallback, useState} from "react";
 
 export default function MainView({children, classes}) {
     return (
@@ -21,15 +22,15 @@ export default function MainView({children, classes}) {
 }
 
 
-
 function LoggedInData() {
-    const {user} = useAuth()
+    const {user, role} = useAuth()
 
-    const {t} = useTranslation()
-
-    return(
-        <Text className={`${defaultText} p-4`}>
-            {/*{t("Address: ") + user.house_session.house.address_street}*/}
-        </Text>
+    return (
+        <View className={"p-4"}>
+            <Text>User: {user?.name}</Text>
+            <Text>Stage: {user?.stage}</Text>
+            <Text>Session: {user?.house_session?.id}</Text>
+            <Text>Role: {role}</Text>
+        </View>
     )
 }

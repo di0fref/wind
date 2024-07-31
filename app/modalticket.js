@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Alert, Text, View} from "react-native";
-import api from "../lib/http-common";
+import {api} from "../lib/http-common";
 import {useLocalSearchParams, useNavigation} from "expo-router";
 
 import {defaultText} from "../assets/styles/default";

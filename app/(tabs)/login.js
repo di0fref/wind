@@ -4,7 +4,7 @@ import {TextInput} from "@/components/text-input";
 import {Button} from "@/components/button";
 import MainView from "../../components/MainView";
 import {defaultInput, defaultText} from "../../assets/styles/default";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigation, Link} from "expo-router";
 import {useAuth} from "../../contexts/AuthContext";
 import {showTransition, t} from "../../lib/utils";
@@ -16,9 +16,10 @@ export default function Login() {
     const [password, setPassword] = useState("password")
     const [hasMultipleRoles, setHasMultipleRoles] = useState(false)
     const nav = useNavigation()
-    const {login, setUserRole, setSelectingRole} = useAuth()
+    const {login, setUserRole, setSelectingRole, user} = useAuth()
 
     const [showOverlay, setShowOverlay] = useState(false)
+
     const onClick = async () => {
 
         // setShowOverlay(true)

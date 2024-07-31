@@ -7,7 +7,7 @@ import {ThumbsUp} from "lucide-react-native";
 import {Rating} from "../../components/Rating";
 import {Button} from "../../components/button";
 import {useState} from "react";
-import api from "../../lib/http-common";
+import {api} from "../../lib/http-common";
 import {useAuth} from "../../contexts/AuthContext";
 
 

@@ -5,13 +5,14 @@ import tw from "twrnc"
 import {useCallback, useEffect, useState} from "react";
 import {defaultText} from "../../assets/styles/default";
 import {useIsFocused} from '@react-navigation/native';
-import api from "../../lib/http-common";
+import {api} from "../../lib/http-common";
 import {MaterialIcons} from '@expo/vector-icons';
 import dayjs from "dayjs";
 import {useNavigation} from "expo-router";
 import Chip from "../../components/Chip";
 import axios from "axios";
 import Overlay from "../../components/Overlay";
+import {apiGet} from "../../lib/api";
 
 export default function Tickets() {
     const [refreshing, setRefreshing] = useState(false);
@@ -21,20 +22,29 @@ export default function Tickets() {
     const [showOverlay, setShowOverlay] = useState(false)
 
     const getTickets = async () => {
-        try {
-            setShowOverlay(true)
-            const res = await api.get("/api/tickets", {
-                cancelToken: source.token,
-            })
+
+        setShowOverlay(true)
+        apiGet("/api/tickets").then((response) => {
+            setTickets(response.data)
+        }).catch(error => {
+            console.log(error)
+        }).finally(() => {
             setShowOverlay(false)
-            setTickets(res.data)
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Request canceled:', error.message);
-            } else {
-                console.error('Error', error.message);
-            }
-        }
+        })
+        // try {
+        //     setShowOverlay(true)
+        //     const res = await api.get("/api/tickets", {
+        //         cancelToken: source.token,
+        //     })
+        //     setShowOverlay(false)
+        //     setTickets(res.data)
+        // } catch (error) {
+        //     if (axios.isCancel(error)) {
+        //         console.log('Request canceled:', error.message);
+        //     } else {
+        //         console.error('Error', error.message);
+        //     }
+        // }
     }
 
     const onRefresh = useCallback(() => {

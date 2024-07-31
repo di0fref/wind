@@ -1,16 +1,16 @@
 import CheckInOutForm from "../../components/CheckInOutForm";
 import {useCallback, useEffect, useState} from "react";
-import api from "../../lib/http-common";
+import {api} from "../../lib/http-common";
 import i18next from "i18next";
 import i18n from "../../lib/i81n";
-import {useFocusEffect} from "@react-navigation/native";
+import {useFocusEffect, useIsFocused} from "@react-navigation/native";
 import {Text} from "react-native";
 
 
 export default function Checkin() {
 
     const [list, setList] = useState()
-
+    const isFoused = useIsFocused()
     i18next.on('languageChanged', (e) => {
         get()
     })
@@ -22,27 +22,22 @@ export default function Checkin() {
     }
 
     useEffect(() => {
-        get()
+        isFoused && get()
         console.log(JSON.stringify("Checkin", null, 2))
-    }, []);
+    }, [isFoused]);
 
 
     if (list) {
         return <CheckInOutForm key={Math.random()}
-            useLangField={{
-                text: i18n.language === "en" ? "text_en" : "text",
-                help: i18n.language === "en" ? "help_en" : "help",
-            }}
-            setCheckedIn={true}
-            action={"checkin"}
-            title={"Check-In"}
-            data={list}
-            link={"checkindone"}
+                               useLangField={{
+                                   text: i18n.language === "en" ? "text_en" : "text",
+                                   help: i18n.language === "en" ? "help_en" : "help",
+                               }}
+                               setCheckedIn={true}
+                               action={"checkin"}
+                               title={"Check-In"}
+                               data={list}
+                               link={"checkindone"}
         />
-    } else {
-        return (
-            <Text>Missing list</Text>
-        )
     }
-
 }
