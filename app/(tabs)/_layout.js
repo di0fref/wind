@@ -125,9 +125,9 @@ export default function DrawerLayout() {
             <Drawer.Screen name={"login"} options={{
                 drawerLabel: t("Login"),
                 title: t("Login"),
-                drawerItemStyle: {
-                    display: isSignedIn ? "none" : "block",
-                },
+                // drawerItemStyle: {
+                //     display: isSignedIn ? "none" : "block",
+                // },
                 drawerIcon: ({color, focused}) => (
                     <User/>
                 )

@@ -29,12 +29,12 @@ export const TextInput = ({
       onFocus={handleFocus}
       onEndEditing={handleEndEditing}
       style={[
-        tailwind`w-full bg-neutral-100 dark:bg-neutral-900 border border-black/20 dark:border-white/20 rounded-md h-12 px-4 text-neutral-950 dark:text-neutral-50`,
+        tailwind`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`,
         isFocused && Platform.OS !== "web" ? tailwind`border-blue-500` : {},
         props.style,
       ]}
       placeholderTextColor={
-        placeholderTextColor || tailwind.color("text-neutral-500")
+        placeholderTextColor || tailwind.color("text-neutral-400")
       }
     />
   );

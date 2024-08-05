@@ -14,6 +14,8 @@ import {Icon} from "lucide-react-native";
 import tw from "twrnc";
 import {MaterialIcons} from "@expo/vector-icons";
 import {t} from "../lib/utils"
+import {getLocales} from "expo-localization";
+import i18n from "i18next";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,16 +30,18 @@ export default function RootLayout() {
     });
 
     useEffect(() => {
-        // SecureStore.setItem("theme", JSON.stringify(""))
-        //
-        // const get = async () => {
-        //     let theme = await getSecureData("theme")
-        //     if (theme) {
-        //         Appearance.setColorScheme(theme)
-        //     }
-        // }
-        // get()
-    }, []);
+        // Set user language or fallback
+        async function getUserLang() {
+            let lang = await getSecureData("lang");
+            let l = lang ? lang : getLocales()?.[0]?.languageCode ?? "se"
+            await i18n.changeLanguage(l)
+        }
+
+        getUserLang()
+        // console.log("LL",JSON.stringify(getSecureData("lang"), null, 2))
+
+
+    }, [])
 
 
     useEffect(() => {
@@ -71,6 +75,14 @@ export default function RootLayout() {
                     <Stack.Screen name="+not-found"/>
                     <Stack.Screen name="register" options={{headerTitle: "Register", headerBackTitle:t("Back"), headerShown: true}}/>
                     <Stack.Screen name="settingsmodal" options={{headerShown: false, presentation: 'modal', title: t("Settings")}}/>
+                    <Stack.Screen name="newticket" options={{
+                        headerRight:  () => (
+                            <TouchableOpacity onPress={nav.goBack}>
+                                <MaterialIcons name="close" size={24} style={tw`text-neutral-600`}/>
+                            </TouchableOpacity>
+                        ),
+                        headerShown: true, _presentation: 'modal', title: t("New ticket")}}/>
+
                 </Stack>
             </AuthProvider>
         </ThemeProvider>

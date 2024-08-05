@@ -2,7 +2,6 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {api} from "../lib/http-common";
 import {getSecureData, removeSecureData, setSecureData} from "@/lib/utils";
 
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -13,7 +12,6 @@ export const AuthProvider = ({children}) => {
     const [stage, setStage] = useState("");
     const [isSelectingRole, setIsSelectingRole] = useState(false)
     const [isSignedIn, setIsSignedIn] = useState(false)
-
 
     const setSelectingRole = (val) => {
         setSecureData("selectingRole", val)
@@ -36,7 +34,7 @@ export const AuthProvider = ({children}) => {
                 if (selectingRole) {
                     await setSelectingRole(selectingRole)
                 }
-                me()
+                await me()
             }
         }
         get()
@@ -45,8 +43,7 @@ export const AuthProvider = ({children}) => {
 
     const me = async (callback) => {
 
-        await api.get("api/me").then(res => {
-
+        api.get("/api/me").then((res) => {
             setStage(res.data.stage)
             setUser(res.data)
 
@@ -60,28 +57,50 @@ export const AuthProvider = ({children}) => {
                         logout();
                     }
                 })
-
             }
         }).catch(err => {
-            console.log(JSON.stringify(err.response.data.message, null, 2))
+            // console.log(err)
             logout()
-        })
+        });
+
+        // try {
+        //     await api.get("api/me")
+        //         .then(res => {
+        //             setStage(res.data.stage)
+        //             setUser(res.data)
+        //
+        //             if (callback) {
+        //                 callback(res.data)
+        //             } else {
+        //                 getSecureData("role").then(role => {
+        //                     if (role) {
+        //                         setRole(role)
+        //                     } else {
+        //                         logout();
+        //                     }
+        //                 })
+        //             }
+        //         }).catch(err => {
+        //             logout()
+        //         })
+        // }catch(err) {}
     }
 
 
     const login = async (userData, callback, setLoading) => {
-
+        console.log(JSON.stringify("*****************************", null, 2))
         try {
             await api.post("/api/token", {
-                ...userData,
-                device_name: "mobile"
+                ...userData
             }).then((res) => {
                 setSecureData("token", res.data.token)
                 setToken(res.data.token)
                 setIsSignedIn(true)
                 me(callback)
+            }).catch(err => {
+                alert("These credentials do not match our records")
             }).finally(() => {
-                if(typeof setLoading === "function"){
+                if (typeof setLoading === "function") {
                     setLoading(false)
                 }
             })
@@ -97,6 +116,7 @@ export const AuthProvider = ({children}) => {
             await api.post("/api/register", {
                 ...userData
             }).then((res) => {
+                console.log(JSON.stringify(res.data, null, 2))
                 if (res.data.error) {
                     alert(res.data.error)
                 } else {
@@ -105,7 +125,7 @@ export const AuthProvider = ({children}) => {
                     me(callback)
                 }
             }).catch(err => {
-                console.log(JSON.stringify(err.data.response, null, 2))
+                // console.log(JSON.stringify(err.data.response, null, 2))
             }).finally(() => {
                 if (typeof setLoading === "function") {
                     setLoading(false)
@@ -135,11 +155,14 @@ export const AuthProvider = ({children}) => {
         // Detach token in backend
         api.post("api/logout").then(res => {
             removeUser()
-        }).finally(() => {
-            if (typeof setLoading === "function") {
-                setLoading(false)
-            }
+        }).catch(err => {
+            // console.log(JSON.stringify(err, null, 2))
         })
+            .finally(() => {
+                if (typeof setLoading === "function") {
+                    setLoading(false)
+                }
+            })
 
     };
 

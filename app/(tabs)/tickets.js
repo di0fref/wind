@@ -13,6 +13,9 @@ import Chip from "../../components/Chip";
 import axios from "axios";
 import Overlay from "../../components/Overlay";
 import {apiGet} from "../../lib/api";
+import {Button} from "../../components/button";
+import {CirclePlus} from "lucide-react-native";
+import {useAuth} from "../../contexts/AuthContext";
 
 export default function Tickets() {
     const [refreshing, setRefreshing] = useState(false);
@@ -21,65 +24,67 @@ export default function Tickets() {
     const source = axios.CancelToken.source();
     const [showOverlay, setShowOverlay] = useState(false)
 
-    const getTickets = async () => {
-
-        setShowOverlay(true)
-        apiGet("/api/tickets").then((response) => {
-            setTickets(response.data)
-        }).catch(error => {
-            console.log(error)
-        }).finally(() => {
-            setShowOverlay(false)
-        })
-        // try {
-        //     setShowOverlay(true)
-        //     const res = await api.get("/api/tickets", {
-        //         cancelToken: source.token,
-        //     })
-        //     setShowOverlay(false)
-        //     setTickets(res.data)
-        // } catch (error) {
-        //     if (axios.isCancel(error)) {
-        //         console.log('Request canceled:', error.message);
-        //     } else {
-        //         console.error('Error', error.message);
-        //     }
-        // }
-    }
+    const {logout} = useAuth()
+    const nav = useNavigation()
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        getTickets()
-        setTimeout(() => {
+        api.get(`/api/tickets`).then((response) => {
+            setTickets(response.data)
+        }).catch(error => {
+            if (error.response && error.response.status === 401) {
+                logout().then(res => {
+                    nav.navigate("login")
+                })
+            }
+            console.log(JSON.stringify(error.response.status, null, 2))
+            console.log(error)
+        }).finally(() => {
             setRefreshing(false);
-        }, 1500);
+        })
     }, []);
 
 
     useEffect(() => {
         console.log(JSON.stringify("Tickets", null, 2))
-        isFocused && getTickets()
+        isFocused && onRefresh()
     }, [isFocused]);
 
-    // useEffect(() => {
-    //     getTickets()
-    // }, []);
+    if (tickets.length > 0) {
+        return (
+            <View className={"h-full flex-1 bg-neutral-100"}>
+                <MainView onRefresh={onRefresh} bg={"#eee"}>
+                    <NewTickerButton/>
+                    {tickets.map(ticket => <Ticket key={ticket.id} data={ticket}/>)}
+                    {/*<Overlay show={showOverlay} text={t("Updating...")}/>*/}
+                </MainView>
+            </View>
+        )
+    } else {
+        return (
+            <MainView onRefresh={onRefresh}>
+                <View className={"flex-1 justify-center h-full"}>
+                    <Text className={`${defaultText} text-center font-bold mb-4`}>{t("No tickets to show.")}</Text>
+                    <Text className={`${defaultText} text-center`}>{t("Drag down to update.")}</Text>
+                </View>
+            </MainView>
+        )
+    }
+}
 
+function NewTickerButton() {
+
+    const nav = useNavigation()
     return (
-
-
-        // <View className={"flex h-full items-center justify-center p-4"}>
-        <ScrollView className={"p-2 bg-[#eee]"}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                    }>
-            {tickets.map(ticket => <Ticket key={ticket.id} data={ticket}/>)}
-            <Overlay show={showOverlay} text={t("Updating...")}/>
-
-        </ScrollView>
-
-        // </View>
-
+        // <Button style={{width: 140}} variant={"info"}>New ticket</Button>
+        <View className={"flex items-end mb-2"}>
+            <Button variant={"info"} className={"w-44 flex flex-row justify-center items-center"} onPress={() => nav.navigate("newticket")}>
+                {/*<View className={"flex flex-row justify-end items-center"}>*/}
+                <CirclePlus color={"white"}/>
+                <Text className={"text-white"}>New Ticket</Text>
+                {/*</View>*/}
+            </Button>
+        </View>
     )
 }
 
@@ -95,7 +100,7 @@ export function Ticket({data}) {
                 </View>
                 <View className={"p-2 flex-1"}>
                     <Text className={`font-bold mb-1`}>{data.description}</Text>
-                    <Text className={` text-neutral-600 text-sm mb-2`}>{data.house.address_street}</Text>
+                    <Text className={` text-neutral-600 text-sm mb-2`}>{data?.house?.address_street}</Text>
                     <Text className={``}>{data.action}</Text>
 
                     <View className={"flex flex-row items-center justify-between mt-4"}>

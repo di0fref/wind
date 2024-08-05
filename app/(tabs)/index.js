@@ -1,4 +1,4 @@
-import {Alert, Image, Linking, View, Text} from "react-native";
+import {Alert, Image, Linking, View, Text, TouchableOpacity} from "react-native";
 import MainView from "../../components/MainView";
 import {Button} from "@/components/button";
 import {useEffect, useState} from "react";
@@ -7,9 +7,10 @@ import {api} from "../../lib/http-common";
 import {defaultText} from "../../assets/styles/default";
 import Camera from "../../components/Camera";
 import {useCameraPermissions} from "expo-camera";
-import {useNavigation} from "expo-router";
+import {Link, useNavigation} from "expo-router";
 import {useFonts} from "expo-font";
 import {useTranslation} from "react-i18next";
+import * as NAV from "expo-router/build/global-state/routing";
 
 
 export default function HomeScreen() {
@@ -34,9 +35,9 @@ export default function HomeScreen() {
         console.log(JSON.stringify("Home", null, 2))
     }, []);
 
-    useEffect(() => {
-        console.log("Stage change: ", user.stage)
-    }, [user.stage]);
+    // useEffect(() => {
+    //     console.log("Stage change: ", user.stage)
+    // }, [user.stage]);
 
     const QRScanned = (result) => {
         try {
@@ -51,6 +52,22 @@ export default function HomeScreen() {
             console.log("Error 2: ", err)
         }
         setShowCamera(false)
+    }
+
+    const cancelAndReset = () => {
+        api.put('/api/housesession/' + user?.house_session?.id, {
+            status: "inactive"
+        }).then(res => {
+            console.log(JSON.stringify(res.body, null, 2))
+
+            me()
+
+            console.log(JSON.stringify(user, null, 2))
+
+            // nav.navigate("index")
+        }).catch((error) => {
+            console.log(JSON.stringify(error.message, null, 2))
+        })
     }
 
     if (showCamera) {
@@ -132,11 +149,25 @@ export default function HomeScreen() {
                     <View className={"absolute items-center m-auto left-1/2 right-1/2 top-16 bottom-0"}>
                         <Image style={{opacity: 0.6}} source={require('../../assets/images/icon.png')}/>
                     </View>
+                    <View>
+                        <Text className={`${defaultText}`}>You are registered on:</Text>
+                        <Text className={`${defaultText}`}>{
+                            user?.house_session?.house?.address_street
+                        }</Text>
+                        <Text className={`${defaultText}`}>{
+                            user?.house_session?.house?.address_postalcode + ", " + user?.house_session?.house?.address_city
+                        }</Text>
+                    </View>
                     <View className={"flex-1 justify-center"}>
-                        <Text className={`${defaultText} font-black text-2xl text-center mb-2`}>Hello there.</Text>
+                        <Text className={`${defaultText} font-black text-2xl text-center mb-2`}>Hello</Text>
                         <Text className={`${defaultText} text-center mb-6`}>Please click on the button below to start the check in process.</Text>
 
-                        <Button variant={"info"} onPress={() => nav.navigate("checkin")}>Start Check-In</Button>
+                        <View className={"flex justify-between flex-r"}>
+                            <Button variant={"info"} onPress={() => nav.navigate("checkin")}>Start Check-In</Button>
+                            <Button className={"mt-6"} variant={"destructive"} onPress={() => {
+                                cancelAndReset()
+                            }}>Cancel and rescan QR code</Button>
+                        </View>
                     </View>
                 </MainView>
             )
@@ -146,13 +177,19 @@ export default function HomeScreen() {
     if (role === "Service") {
         return (
             <MainView>
-                <View className={"absolute items-center m-auto left-1/2 right-1/2 top-16 bottom-0"}>
+                <View className={"absolute items-center m-auto left-1/2 right-1/2 top-1 bottom-0"}>
                     <Image style={{opacity: 0.6}} source={require('../../assets/images/icon.png')}/>
                 </View>
                 <View className={"flex-1 justify-center"}>
                     <Text className={`${defaultText} text-center mb-2 font-black text-2xl`}>{t("Welcome_name", {name: user.name})}</Text>
                     <Text className={`${defaultText} text-center`}>{t("Your service tickets can be found in the My Tickets tab below")}</Text>
+                    <View className={"mt-4"}>
+                        <Link href={"tickets"}>
+                            <Text className={"font-bold text-center text-blue-800"}>{t("My Tickets")}</Text>
+                        </Link>
+                    </View>
                 </View>
+
             </MainView>
         )
     }

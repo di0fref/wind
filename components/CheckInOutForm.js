@@ -103,7 +103,7 @@ export default function CheckInOutForm({data, link, action, useLangField, setIsD
                                     <Stepper key={categoryIndex} list={list} current={categoryIndex}/>
                                 </View>
 
-                                <Text>{t(list.list_template_categories[categoryIndex]?.name)}</Text>
+                                {/*<Text>{t(list.list_template_categories[categoryIndex]?.name)}</Text>*/}
 
                                 <Text className={`${defaultText} font-bold `} style={{textAlign: "center", marginBottom: 20}}>{listIndex + 1} {t("of")} {list?.list_template_categories[categoryIndex]?.list_template_items.length}</Text>
                                 <Text className={"font-bold text-xl  w-72 mx-auto"} style={{textAlign: "center", marginBottom: 10}}>{list?.list_template_categories[categoryIndex]?.list_template_items[listIndex]?.[useLangField.text]}</Text>

@@ -26,7 +26,7 @@ export default function Modalticket() {
     const getTicket = () => {
         api.get("/api/ticket/" + ticketId).then(res => {
             setData(res.data)
-        })
+        }).catch(err => {})
     }
 
     const markOpenClicked = () => {

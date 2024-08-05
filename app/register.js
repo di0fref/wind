@@ -88,7 +88,7 @@ export default function Register() {
             right: 10,
         }
     }
-const color = "lightgray"
+    const color = "lightgray"
     return (
         <MainView>
 
@@ -97,6 +97,7 @@ const color = "lightgray"
 
             <Text className={"text-center font-black text-2xl mb-4"}>{t("Enter your details")}</Text>
 
+                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Name</Text>
                 <View style={s.inputContainer}>
                     <Controller control={control} render={({field: {onChange, value}}) => (
                         <TextInput
@@ -108,11 +109,11 @@ const color = "lightgray"
                     <User style={s.icon} color={color}/>
                 </View>
 
-
                 <View className={"pb-2"}>
                     {errors.name && <Text className={"text-sm text-red-800"}>{errors.name.message}</Text>}
                 </View>
 
+                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Email</Text>
                 <View style={s.inputContainer}>
                     <Controller control={control} render={({field: {onChange, value}}) => (
                         <TextInput
@@ -128,6 +129,8 @@ const color = "lightgray"
                     {errors.email && <Text className={"text-sm text-red-800"}>{errors.email.message}</Text>}
                 </View>
 
+                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Password</Text>
+
                 <View style={s.inputContainer}>
 
                     <Controller control={control} render={({field: {onChange, value}}) => (
@@ -141,10 +144,12 @@ const color = "lightgray"
                     <Eye style={s.icon} color={color}/>
                 </View>
 
-
                 <View className={"pb-2"}>
                     {errors.password && <Text className={"text-sm text-red-800"}>{errors.password.message}</Text>}
                 </View>
+
+                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Repeat password</Text>
+
                 <View style={s.inputContainer}>
 
                     <Controller control={control} render={({field: {onChange, value}}) => (
