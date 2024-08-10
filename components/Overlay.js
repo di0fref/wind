@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     }
 })
 export default function Overlay({show, text}) {
+
     const [modalVisible, setModalVisible] = useState(false)
+
     useEffect(() => {
         setModalVisible(show)
     }, [show]);

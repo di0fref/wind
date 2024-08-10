@@ -2,14 +2,16 @@ import {TouchableOpacity, View, Text} from "react-native";
 import MainView from "../components/MainView";
 import {useNavigation} from "expo-router";
 import {useAuth} from "../contexts/AuthContext";
-import {t} from "../lib/utils";
 import {defaultText} from "../assets/styles/default";
 import {Button} from "../components/button";
+import {useTranslation} from "react-i18next";
 
 export default function Roleselector() {
 
     const {user, setUserRole, setSelectingRole, logout} = useAuth()
     const nav = useNavigation()
+
+    const {t} = useTranslation();
 
     const setRole = (val) => {
         setUserRole(val)
@@ -36,7 +38,7 @@ export default function Roleselector() {
                 <Button className={"mt-4"} onPress={() => {
                     logout()
                     nav.goBack()
-                }} variant={"destructive"}>Cancel</Button>
+                }} variant={"destructive"}>{t("Cancel")}</Button>
             </View>
         </MainView>
     )

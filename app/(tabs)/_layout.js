@@ -2,8 +2,9 @@ import React, {useEffect} from 'react';
 import {useColorScheme, Text, TouchableOpacity} from "react-native";
 import {useAuth} from "../../contexts/AuthContext";
 // import {Drawer} from "expo-router/drawer";
-import {House, Wrench, Download, Upload, CircleHelp, User, Cog} from "lucide-react-native";
+import {House, Wrench, Download, Upload, CircleHelp, User, Cog, BookOpenText, Map} from "lucide-react-native";
 import {useTranslation} from "react-i18next";
+import {useNavigation} from "@react-navigation/native";
 
 
 import Login from "./login";
@@ -16,6 +17,7 @@ import Checkindone from "./checkindone";
 import Tickets from "./tickets";
 import Customerservice from "./customerservice";
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import T from "./t";
 
 const Drawer = createDrawerNavigator();
 
@@ -48,8 +50,18 @@ export default function DrawerLayout() {
 
             {isSignedIn ? (
                 <>
+
+                    <Drawer.Screen options={{
+                        drawerLabel: t("T"),
+                        title: t("T"),
+                        drawerIcon: ({color, focused}) => (
+                            <House/>
+                        ),
+                    }} name={"ticks"} component={T}/>
+
                     <Drawer.Screen options={{
                         drawerLabel: t("Start"),
+                        title: t("Start"),
                         drawerIcon: ({color, focused}) => (
                             <House/>
                         ),
@@ -123,11 +135,11 @@ export default function DrawerLayout() {
             )}
 
             <Drawer.Screen name={"login"} options={{
-                drawerLabel: t("Login"),
-                title: t("Login"),
-                // drawerItemStyle: {
-                //     display: isSignedIn ? "none" : "block",
-                // },
+                drawerLabel: t("Sign in"),
+                title: t("Sign in"),
+                drawerItemStyle: {
+                    display: isSignedIn ? "none" : "block",
+                },
                 drawerIcon: ({color, focused}) => (
                     <User/>
                 )
@@ -142,7 +154,7 @@ export default function DrawerLayout() {
                     display: (isSignedIn ? (role === "Service") ? "none" : "" : "block")
                 },
                 drawerIcon: ({color, focused}) => (
-                    <Download/>
+                    <BookOpenText/>
                 ),
             }} component={Manual}/>
 
@@ -161,9 +173,9 @@ export default function DrawerLayout() {
     )
 }
 
-import {defaultText} from "../../assets/styles/default";
-import {TabBarIcon} from "../../components/navigation/TabBarIcon";
-import {useNavigation} from "@react-navigation/native";
+// import {defaultText} from "../../assets/styles/default";
+// import {TabBarIcon} from "../../components/navigation/TabBarIcon";
+// import MapScreen from "./map";
 
 
 // export default function TabLayout() {

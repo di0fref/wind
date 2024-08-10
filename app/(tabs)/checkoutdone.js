@@ -19,12 +19,11 @@ export default function Checkoutdone() {
         // Send to backend
         api.put("/api/housesession/" + user.house_session.id, {rating: rating}
         ).then(res => {
-            console.log(JSON.stringify(res.data, null, 2))
 
-            Alert.alert(t("Thank you"), t("For rating us. Hope to to see you again soon"),
+            Alert.alert(t("Thank you!"), t("For rating us. Hope to to see you again soon"),
                 [
                     {
-                        text: 'Close', onPress: () => {
+                        text: t('Close'), onPress: () => {
                             nav.navigate("index")
                         }
                     }
@@ -40,10 +39,10 @@ export default function Checkoutdone() {
                     <ThumbsUp color={"blue"} size={48}/>
                 </View>
                 <Text className={`${defaultText} font-black text-xl `}>{t("Thank you!")}</Text>
-                <Text className={`${defaultText} px-6 mt-4 mb-6`}>{t("Your have successfully checked out and documented the status of the cottage.")}</Text>
+                <Text className={`${defaultText} px-6 mt-4 mb-6 text-center`}>{t("You have successfully checked out and documented the status of the cottage.")}</Text>
 
-                <Text className={`${defaultText} mb-4 `}>Please take your time to rate your stay wih us.</Text>
-                <Rating setRating={setRating}/>
+                <Text className={`${defaultText} mb-4 text-center `}>{t("Please take your time to rate your stay wih us.")}</Text>
+                <Rating customLabel={() => {<Text>{t("Tap to rate!")}</Text>}} setRating={setRating}/>
                 <Button onPress={submit} className={"mt-8 "} variant={"info"}>{t("Submit")}</Button>
             </View>
         </MainView>

@@ -1,37 +1,28 @@
-import {View, Text, Pressable} from "react-native";
-import tw from "twrnc";
+import {View, Text} from "react-native";
 import {TextInput} from "@/components/text-input";
 import {Button} from "@/components/button";
 import MainView from "../../components/MainView";
-import {defaultInput, defaultText} from "../../assets/styles/default";
 import {useEffect, useState} from "react";
 import {useNavigation, Link} from "expo-router";
 import {useAuth} from "../../contexts/AuthContext";
-import {showTransition, t} from "../../lib/utils";
 import Overlay from "../../components/Overlay";
-import {Mail, User} from "lucide-react-native";
+import {EyeOff, Mail, User} from "lucide-react-native";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {useTranslation} from "react-i18next";
 
 export default function Login() {
 
-    const [email, setEmail] = useState("kalle@kalle.se")
-    const [password, setPassword] = useState("password")
-    const [hasMultipleRoles, setHasMultipleRoles] = useState(false)
     const nav = useNavigation()
-    const {login, setUserRole, setSelectingRole, user} = useAuth()
-
-    const [showOverlay, setShowOverlay] = useState(false)
+    const {login, setUserRole, setSelectingRole} = useAuth()
+    const {t} = useTranslation()
+    const [isLoading, setIsLoading] = useState(false)
 
     const onClick = async (formData) => {
 
-        // setShowOverlay(true)
-        await login(
-            {
-                ...formData,
-                device_name: "mobile"
-            }, loginCallBack, setShowOverlay)
+        // setIsLoading(true)
+        login({...formData, device_name: "mobile"}, loginCallBack)
     }
 
     function loginCallBack(res) {
@@ -40,7 +31,7 @@ export default function Login() {
             setSelectingRole(true)
             nav.navigate("roleselector")
         } else {
-            setUserRole(res.roles[0])
+            setUserRole(res?.roles[0]?.name)
             nav.navigate("index")
         }
     }
@@ -77,10 +68,11 @@ export default function Login() {
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            email: 'kalle@kalle.se',
+            email: 'fredrik.fahlstad@gmail.com',
             password: 'password',
         },
     });
+
 
     return (
         <MainView classes={""}>
@@ -95,13 +87,13 @@ export default function Login() {
                             <View className="">
 
 
-                                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Email</Text>
+                                <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>{t("Email")}</Text>
                                 <View className={""} style={s.inputContainer}>
                                     <Controller control={control} render={({field: {onChange, value}}) => (
                                         <TextInput
                                             value={value}
                                             onChangeText={onChange}
-                                            placeholder="Email"
+                                            placeholder={t("Email")}
                                         />
                                     )} name={"email"}/>
                                     <Mail style={s.icon} color={color}/>
@@ -111,16 +103,16 @@ export default function Login() {
                                 </View>
 
 
-                                <Text className={"mb-2  text-sm font-bold text-gray-900 dark:text-white"}>Password</Text>
+                                <Text className={"mb-2  text-sm font-bold text-gray-900 dark:text-white"}>{t("Password")}</Text>
                                 <View className={""} style={s.inputContainer}>
                                     <Controller control={control} render={({field: {onChange, value}}) => (
                                         <TextInput
                                             value={value}
                                             onChangeText={onChange}
-                                            placeholder="Password"
+                                            placeholder={t("Password")}
                                         />
                                     )} name={"password"}/>
-                                    <Mail style={s.icon} color={color}/>
+                                    <EyeOff style={s.icon} color={color}/>
                                 </View>
 
                                 <View className={"pb-2"}>
@@ -128,16 +120,19 @@ export default function Login() {
                                 </View>
 
 
-                                <Button className={"mt-8"} onPress={handleSubmit(onClick)} variant={"info"}>{t("Sign in")}</Button>
+                                <Button disabled={isLoading ?? true} className={"mt-8"} onPress={handleSubmit(onClick)} variant={"info"}>
+                                    {isLoading ? t("Signing in...") : t("Sign in")}
+                                </Button>
+
                                 <Text className="text-sm font-light text-gray-500 mt-8">
-                                    {t("Don’t have an account yet?")} <Link className={"text-blue-800"} href={"register"}>Sign up</Link>
+                                    {t("Don’t have an account yet?")} <Link className={"text-blue-800"} href={"register"}>{t("Sign up")}</Link>
                                 </Text>
                             </View>
                         </View>
                     </View>
                 </View>
             </View>
-            <Overlay show={showOverlay} text={t("Logging in...")}/>
+            {/*<Overlay show={isLoading} text={t("Logging in...")}/>*/}
         </MainView>
     );
 };

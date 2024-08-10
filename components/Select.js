@@ -8,15 +8,17 @@ import TagItem from '../lib/TagItem';
 import utilities from '../lib/utilities';
 import PropTypes from 'prop-types';
 import tailwind from "twrnc";
+import i18next, {t} from "i18next"
 
 const {height} = Dimensions.get('window');
 const INIT_HEIGHT = height * 0.6;
 
 // create a component
 class Select2 extends Component {
+
     static defaultProps = {
-        cancelButtonText: 'Cancel',
-        selectButtonText: 'Select',
+        cancelButtonText: i18next.t('Cancel'),
+        selectButtonText: i18next.t('Select'),
         searchPlaceHolderText: "Search",
         listEmptyTitle: 'Nothing to show',
         colorTheme: '#16a45f',
@@ -120,7 +122,7 @@ class Select2 extends Component {
         let {listEmptyTitle} = this.props;
         return (
             <Text style={[styles.empty, this.defaultFont]}>
-                {listEmptyTitle}
+                {t(listEmptyTitle)}
             </Text>
         );
     }
@@ -197,7 +199,7 @@ class Select2 extends Component {
                             ListEmptyComponent={this.renderEmpty}
                         />
 
-                        <View className={"flex flex-row justify-around mb-12"}>
+                        <View className={"flex flex-row justify-around pb-12 pt-8 bg-gray-100 border-t border-t-gray-200"}>
                             <Button
                                 // defaultFont={this.defaultFont}
                                 onPress={() => {
@@ -210,7 +212,7 @@ class Select2 extends Component {
                                 // backgroundColor='#fff'
                                 // textStyle={buttonTextStyle}
                                 // style={[styles.button, buttonStyle, {marginRight: 5, marginLeft: 10, borderWidth: 1, borderColor: colorTheme}]}
-                            >Cancel</Button>
+                            >{t("Cancel")}</Button>
                             <Button
                                 variant={"success"}
                                 defaultFont={this.defaultFont}
@@ -228,7 +230,7 @@ class Select2 extends Component {
                                 // backgroundColor={colorTheme}
                                 // textStyle={buttonTextStyle}
                                 // style={[styles.button, buttonStyle, {marginLeft: 5, marginRight: 10}]}
-                            >Select</Button>
+                            >{t("Select")}</Button>
                         </View>
                     </Animated.View>
                 </Modal>
@@ -267,7 +269,7 @@ class Select2 extends Component {
                                     }
                                 </View>
                         )
-                        : <Text className={"text-gray-400"}>{title?title:"Select House"}</Text>
+                        : <Text className={"text-gray-400"}>{title?title:i18next.t("Select House")}</Text>
                 }
             </TouchableOpacity>
         );

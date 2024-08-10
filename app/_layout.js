@@ -1,5 +1,5 @@
 import 'react-native-reanimated';
-import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
+import {DarkTheme, DefaultTheme, ThemeProvider, useTheme} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
 import {Stack, useNavigation} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,9 +13,9 @@ import {getSecureData} from "../lib/utils";
 import {Icon} from "lucide-react-native";
 import tw from "twrnc";
 import {MaterialIcons} from "@expo/vector-icons";
-import {t} from "../lib/utils"
 import {getLocales} from "expo-localization";
 import i18n from "i18next";
+import {useTranslation} from "react-i18next";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,6 +29,7 @@ export default function RootLayout() {
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     });
 
+    const {t} = useTranslation();
     useEffect(() => {
         // Set user language or fallback
         async function getUserLang() {
@@ -73,15 +74,16 @@ export default function RootLayout() {
                         )
                     }}/>
                     <Stack.Screen name="+not-found"/>
-                    <Stack.Screen name="register" options={{headerTitle: "Register", headerBackTitle:t("Back"), headerShown: true}}/>
+                    <Stack.Screen name="register" options={{headerTitle: t("Register"), headerBackTitle:t("Back"), headerShown: true}}/>
                     <Stack.Screen name="settingsmodal" options={{headerShown: false, presentation: 'modal', title: t("Settings")}}/>
                     <Stack.Screen name="newticket" options={{
+                        headerBackTitle:t("Back"),
                         headerRight:  () => (
                             <TouchableOpacity onPress={nav.goBack}>
                                 <MaterialIcons name="close" size={24} style={tw`text-neutral-600`}/>
                             </TouchableOpacity>
                         ),
-                        headerShown: true, _presentation: 'modal', title: t("New ticket")}}/>
+                        headerShown: true, _presentation: 'modal', title: t("New Ticket")}}/>
 
                 </Stack>
             </AuthProvider>

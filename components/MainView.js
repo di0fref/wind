@@ -13,7 +13,7 @@ export default function MainView({children, onRefresh, bg}) {
 
     return (
         <SafeAreaView style={{flexGrow: 1}}>
-            <LoggedInData/>
+            {/*<LoggedInData/>*/}
             <ScrollView
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
                 contentContainerStyle={{

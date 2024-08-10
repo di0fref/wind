@@ -1,4 +1,4 @@
-import {Platform, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {Link, useNavigation} from "expo-router";
 import LanguageSelector from "@/components/LanguageSelector";
 import {useTranslation} from "react-i18next";
@@ -18,11 +18,25 @@ export default function SettingModal() {
     const [showOverlay, setShowOverlay] = useState(false)
 
     const logOutClickedHandler = () => {
-        setShowOverlay(true)
-        logout(setShowOverlay).then(() => {
-            setShowOverlay(false)
-            // nav.navigate("login")
-        })
+
+        Alert.alert(
+            t("Logout"),
+            t("Are you sure you want to log out?"), [
+                {
+                    text: t("Cancel")
+                },
+                {
+                    text: t("Yes"),
+                    onPress: () => {
+                        setShowOverlay(true)
+                        logout(setShowOverlay).then(() => {
+                            setShowOverlay(false)
+                            // nav.navigate("login")
+                        })
+                    }
+                }
+            ])
+
 
     }
 

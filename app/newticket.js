@@ -5,7 +5,7 @@ import {TextInput} from "../components/text-input";
 import {defaultText} from "../assets/styles/default";
 import {Modal, Switch, Text, View} from "react-native";
 import {useTranslation} from "react-i18next";
-import Select from "../components/Select";
+import Select2 from "../components/Select";
 import {Button} from "../components/button";
 import {useNavigation} from "expo-router";
 import * as yup from "yup";
@@ -107,7 +107,7 @@ export default function Newticket() {
                 <Text className={`${defaultText} text-center font-black text-2xl mb-6`}>{t("Create new ticket")}</Text>
 
                 <View>
-                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Title</Text>
+                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>{t("Title")}</Text>
 
                     <Controller control={control} render={({field: {onChange, value}}) => (
                         <TextInput className={"mb-2"} value={value} onChangeText={onChange} placeholder={t("Title")}/>
@@ -119,9 +119,9 @@ export default function Newticket() {
                 </View>
 
                 <View>
-                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>House</Text>
+                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>{t("House")}</Text>
                     <Controller control={control} render={({field: {onChange, value}}) => (
-                        <Select onSelect={onChange} searchPlaceHolderText={t("Search")} showSearchBox onSearch={
+                        <Select2 onSelect={onChange} searchPlaceHolderText={t("Search")} showSearchBox onSearch={
                             debounce((e) => {
                                 onSearch(e);
                             })
@@ -134,7 +134,7 @@ export default function Newticket() {
                 </View>
 
                 <View>
-                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>Description</Text>
+                    <Text className={"mb-2 text-sm font-bold text-gray-900 dark:text-white"}>{t("Description")}</Text>
                     <Controller control={control} render={({field: {onChange, value}}) => (
                         <TextArea className={"mb-2"} value={value} onChangeText={onChange} _multiline={true} placeholder={t("Description")}/>
                     )} name={"description"}/>
@@ -147,7 +147,7 @@ export default function Newticket() {
 
 
                 <View className={"flex flex-row justify-end items-center"}>
-                    <Text className={`${defaultText} mr-4`}>Assign to me</Text>
+                    <Text className={`${defaultText} mr-4`}>{t("Assign to me")}</Text>
                     <Controller control={control} render={({field: {onChange, value}}) => (
                         <Switch onValueChange={onChange} value={value}/>
                     )} name={"assign_to_me"}/>

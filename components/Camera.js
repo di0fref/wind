@@ -3,7 +3,7 @@ import {CameraView, useCameraPermissions} from 'expo-camera';
 import {useState} from "react";
 import {useNavigation} from "expo-router";
 import {Button} from "./button";
-import {t} from "../lib/utils";
+import {useTranslation} from "react-i18next";
 // import {useTranslation} from "react-i18next";
 export default function Camera({cancelClicked, QRScanned}) {
 
@@ -12,8 +12,8 @@ export default function Camera({cancelClicked, QRScanned}) {
 
     // const {t} = useTranslation()
     const nav = useNavigation()
-    console.log(JSON.stringify(permission, null, 2))
 
+    const {t} = useTranslation()
     const appStyles = StyleSheet.create({
         flexView: {
             alignContent: "center",
@@ -48,7 +48,7 @@ export default function Camera({cancelClicked, QRScanned}) {
                 {/*}}>*/}
                 {/*    {t("CHECK IN")}*/}
                 {/*</Button>*/}
-                <Button className={"mb-4"} variant={"destructive"} onPress={cancelClicked}>
+                <Button className={"mb-8"} variant={"destructive"} onPress={cancelClicked}>
                     {t("Cancel")}
                 </Button>
             </View>

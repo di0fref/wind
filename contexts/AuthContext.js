@@ -1,6 +1,10 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {api} from "../lib/http-common";
 import {getSecureData, removeSecureData, setSecureData} from "@/lib/utils";
+import i81n from "../lib/i81n";
+import i18next from "i18next";
+import wretch from "wretch"
+import {apiGet, apiPost} from "../lib/api";
 
 const AuthContext = createContext();
 
@@ -59,54 +63,33 @@ export const AuthProvider = ({children}) => {
                 })
             }
         }).catch(err => {
-            // console.log(err)
+            console.log(err)
             logout()
         });
 
-        // try {
-        //     await api.get("api/me")
-        //         .then(res => {
-        //             setStage(res.data.stage)
-        //             setUser(res.data)
-        //
-        //             if (callback) {
-        //                 callback(res.data)
-        //             } else {
-        //                 getSecureData("role").then(role => {
-        //                     if (role) {
-        //                         setRole(role)
-        //                     } else {
-        //                         logout();
-        //                     }
-        //                 })
-        //             }
-        //         }).catch(err => {
-        //             logout()
-        //         })
-        // }catch(err) {}
     }
-
 
     const login = async (userData, callback, setLoading) => {
         console.log(JSON.stringify("*****************************", null, 2))
         try {
             await api.post("/api/token", {
-                ...userData
-            }).then((res) => {
+                ...userData,
+            },{timeout: 900}).then((res) => {
                 setSecureData("token", res.data.token)
                 setToken(res.data.token)
                 setIsSignedIn(true)
                 me(callback)
             }).catch(err => {
-                alert("These credentials do not match our records")
+                if(err.response.status === 422) {
+                    alert(i18next.t("These credentials do not match our records"))
+                }
             }).finally(() => {
                 if (typeof setLoading === "function") {
                     setLoading(false)
                 }
             })
         } catch (error) {
-            console.log("err", JSON.stringify(error.response.data, null, 2))
-            alert("Something went wrong, please try again")
+            alert(i18next.t("Something went wrong, please try again"))
         }
     }
 
@@ -115,17 +98,17 @@ export const AuthProvider = ({children}) => {
         try {
             await api.post("/api/register", {
                 ...userData
-            }).then((res) => {
-                console.log(JSON.stringify(res.data, null, 2))
+            }).then(async (res) => {
                 if (res.data.error) {
                     alert(res.data.error)
                 } else {
                     setSecureData("token", res.data.token)
                     setToken(res.data.token)
-                    me(callback)
+                    setIsSignedIn(true)
+                    await me(callback)
                 }
             }).catch(err => {
-                // console.log(JSON.stringify(err.data.response, null, 2))
+                console.log(JSON.stringify(err.data.response, null, 2))
             }).finally(() => {
                 if (typeof setLoading === "function") {
                     setLoading(false)
@@ -134,7 +117,7 @@ export const AuthProvider = ({children}) => {
             })
         } catch (error) {
             console.log(error)
-            alert("Something went wrong, please try again")
+            alert(t("Something went wrong, please try again"))
         }
     };
 
@@ -157,6 +140,7 @@ export const AuthProvider = ({children}) => {
             removeUser()
         }).catch(err => {
             // console.log(JSON.stringify(err, null, 2))
+            removeUser()
         })
             .finally(() => {
                 if (typeof setLoading === "function") {

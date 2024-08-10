@@ -119,8 +119,10 @@ export const Button = ({
       hover: tailwind`bg-orange-700 dark:bg-orange-800`,
     },
     info: {
-      // bg: tailwind`bg-[#093a5c] dark:bg-blue-700`,
-      bg: tailwind`bg-[#61587d] dark:bg-blue-700`,
+      bg: tailwind`bg-[#093a5c] dark:bg-blue-700`,
+      // bg: tailwind`bg-[#61587d] dark:bg-blue-700`,
+
+      // bg: tailwind`bg-purple-00`,
 
       hover: tailwind`bg-[#012b64] dark:bg-blue-800`,
     },
