@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
     useEffect(() => {
         console.log(JSON.stringify("Home", null, 2))
-        nav.navigate("ticks")
+        // nav.navigate("ticks")
     }, []);
 
     // useEffect(() => {

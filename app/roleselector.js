@@ -29,7 +29,7 @@ export default function Roleselector() {
                     (
                         <View className={"bg-neutral-50 p-3 mb-3 border border-neutral-200 rounded"} key={role?.name}>
                             <TouchableOpacity onPress={e => setRole(role?.name)}>
-                                <Text className={`${defaultText} font-bold mb-1`}>{role?.name}</Text>
+                                <Text className={`${defaultText} font-bold mb-1`}>{t(role?.name)}</Text>
                                 <Text className={`${defaultText}`}>{role?.description}</Text>
                             </TouchableOpacity>
                         </View>

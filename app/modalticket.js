@@ -15,6 +15,7 @@ import {TextArea} from "../components/text-area";
 import {Select} from "../components/select";
 import i18next from "i18next";
 import MapScreen from "../components/MapScreen";
+import {Picker} from '@react-native-picker/picker';
 
 const selectStatusValues = [
     {
@@ -147,6 +148,7 @@ export default function Modalticket() {
 
         })
     }
+    const [selectedLanguage, setSelectedLanguage] = useState();
 
     return (
         <MainView>
@@ -173,7 +175,20 @@ export default function Modalticket() {
                         {!isEditing ? (
                             <Chip text={data.status}/>
                         ) : (
-                            <Select value={status} onValueChange={setStatus} items={selectStatusValues}/>
+                            <>
+                            {/*<Select value={status} onValueChange={setStatus} items={selectStatusValues}/>*/}
+                            <View style={{ width: "100%" }}>
+
+                            <Picker itemStyle={{ width: 250 }}
+                                    selectedValue={selectedLanguage}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setSelectedLanguage(itemValue)
+                                    }>
+                                    <Picker.Item label="Java" value="java" />
+                                    <Picker.Item label="JavaScript" value="js" />
+                                </Picker>
+                            </View>
+                            </>
                         )}
 
                     </View>

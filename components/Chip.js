@@ -30,7 +30,7 @@ export default function Chip({text}) {
 
     return (
         <View style={tw`relative items-center rounded-2xl bg-${color}-600 py-1 px-3 `}>
-            <Text className="text-white text-xs font-sans font-bold whitespace-nowrap">{t(capitalize(text))}</Text>
+            <Text className="text-white text-xs font-bold whitespace-nowrap">{t(capitalize(text))}</Text>
         </View>
     )
 }

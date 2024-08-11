@@ -5,9 +5,9 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "android": "DARK_MODE=media expo start --android",
+    "ios": "DARK_MODE=media expo start --ios",
+    "web": "DARK_MODE=media expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
     "postinstall": "patch-package"
@@ -17,14 +17,19 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@gluestack-ui/divider": "^0.1.9",
     "@gluestack-ui/nativewind-utils": "^1.0.23",
     "@gluestack-ui/overlay": "^0.1.15",
+    "@gluestack-ui/spinner": "^0.1.14",
     "@gluestack-ui/toast": "^1.0.7",
     "@hookform/resolvers": "^3.9.0",
     "@react-native-picker/picker": "^2.7.7",
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.0.2",
+    "@shopify/flash-list": "1.6.4",
+    "@tanstack/react-query": "^5.51.23",
     "axios": "^1.7.2",
+    "babel-plugin-module-resolver": "^5.0.2",
     "bankid": "^3.2.0",
     "dayjs": "^1.11.12",
     "expo": "~51.0.22",
@@ -53,6 +58,7 @@
     "react-native-floating-label-input": "^1.4.3",
     "react-native-floating-label-text-input": "^0.1.5",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-intersection-observer": "^0.2.0",
     "react-native-load-more-flatlist": "^1.0.1",
     "react-native-maps": "1.14.0",
     "react-native-modal": "^13.0.1",
@@ -66,7 +72,8 @@
     "react-query": "^3.39.3",
     "twrnc": "^4.5.0",
     "wretch": "^2.9.0",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "react-native-webview": "13.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

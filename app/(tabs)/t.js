@@ -1,81 +1,108 @@
-import React from 'react';
-import { Box, Text, FlatList, Divider, Spinner } from 'native-base';
-import { useInfiniteQuery } from 'react-query';
+import {useInfiniteQuery} from "@tanstack/react-query";
+import React from "react";
+import {Image, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlashList} from "@shopify/flash-list";
 
-const BASE_URL = 'https://api.rawg.io/api';
-// Replace the Xs below with your own API key
-const API_KEY = '';
 
-export { BASE_URL, API_KEY };
+function useFetchDogs() {
+    const getDogs = async ({pageParam = 0}) => {
 
-export const gamesApi = {
-    // later convert this url to infinite scrolling
-    fetchAllGames: ({ pageParam = 1 }) =>
-        fetch(`${BASE_URL}/games?key=${API_KEY}&page=${pageParam}`).then(res => {
-            return res.json();
-        })
-};
-export const HomeScreen = () => {
-    const { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-        useInfiniteQuery('games', gamesApi.fetchAllGames, {
-            getNextPageParam: lastPage => {
-                if (lastPage.next !== null) {
-                    return lastPage.next;
-                }
+        const res = await (
+            await fetch(
+                `https://api.thedogapi.com/v1/breeds?limit=10&page=${pageParam}`
+            )
+        ).json();
 
-                return lastPage;
-            }
+        return {
+            data: res,
+            nextPage: pageParam + 1,
+        };
+    };
+
+    return useInfiniteQuery(
+        {
+            queryKey: ["dogs"],
+            queryFn: getDogs,
+            getNextPageParam: (lastPage, pages) => {
+
+                console.log(JSON.stringify(lastPage, null, 2))
+
+                return lastPage.nextPage
+            },
         });
+}
 
-    const loadMore = () => {
+
+
+
+const DogCard = ({dog}) => {
+    return (
+        <View>
+            <View style={styles.row}>
+                <Image source={{uri: dog?.image?.url}} style={styles.pic}/>
+                <View style={styles.nameContainer}>
+                    <Text style={styles.nameTxt}>{dog.name}</Text>
+                </View>
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderColor: "#DCDCDC",
+        backgroundColor: "#fff",
+        borderBottomWidth: 1,
+        padding: 10,
+    },
+    pic: {
+        borderRadius: 30,
+        width: 60,
+        height: 60,
+    },
+    nameContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    nameTxt: {
+        marginLeft: 15,
+        fontWeight: "600",
+        color: "#222",
+        fontSize: 18,
+    },
+});
+
+const T = () => {
+    const {data, isLoading, isError, hasNextPage, fetchNextPage} =
+        useFetchDogs();
+
+
+    if (isLoading) return <Text>Loading...</Text>;
+
+    if (isError) return <Text>An error occurred while fetching data</Text>;
+
+    const flattenData = data.pages.flatMap((page) => page.data);
+
+    const loadNext = () => {
+        console.log("page: ",JSON.stringify(hasNextPage, null, 2))
         if (hasNextPage) {
             fetchNextPage();
         }
     };
 
-    const renderSpinner = () => {
-        return <Spinner color='emerald.500' size='lg' />;
-    };
-
-    const gameItemExtractorKey = (item, index) => {
-        return index.toString();
-    };
-
-    const renderData = item => {
-        return (
-            <Box px={2} mb={8}>
-                <Text fontSize='20'>{item.item.name}</Text>
-            </Box>
-        );
-    };
-
-    return isLoading ? (
-        <Box
-            flex={1}
-            backgroundColor='white'
-            alignItems='center'
-            justifyContent='center'
-        >
-            <Spinner color='emerald.500' size='lg' />
-        </Box>
-    ) : (
-        <Box flex={1} safeAreaTop backgroundColor='white'>
-            <Box height={16} justifyContent={'center'} px={2}>
-                <Text fontSize={28} fontWeight={'600'} color={'emerald.500'}>
-                    Explore Games
-                </Text>
-            </Box>
-            <Divider />
-            <Box px={2}>
-                <FlatList
-                    data={data.pages.map(page => page.results).flat()}
-                    keyExtractor={gameItemExtractorKey}
-                    renderItem={renderData}
-                    onEndReached={loadMore}
-                    onEndReachedThreshold={0.3}
-                    ListFooterComponent={isFetchingNextPage ? renderSpinner : null}
-                />
-            </Box>
-        </Box>
+    return (
+        <SafeAreaView style={{flex: 1, backgroundColor: "#fff"}}>
+            <FlashList
+                keyExtractor={(item) => item.id}
+                data={flattenData}
+                renderItem={({item}) => <DogCard dog={item}/>}
+                onEndReached={loadNext}
+                onEndReachedThreshold={0.3}
+                estimatedItemSize={100}
+            />
+        </SafeAreaView>
     );
 };
+export default T

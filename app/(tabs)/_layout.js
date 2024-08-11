@@ -17,7 +17,7 @@ import Checkindone from "./checkindone";
 import Tickets from "./tickets";
 import Customerservice from "./customerservice";
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import T from "./t";
+import Ts from "./ts";
 
 const Drawer = createDrawerNavigator();
 
@@ -57,7 +57,7 @@ export default function DrawerLayout() {
                         drawerIcon: ({color, focused}) => (
                             <House/>
                         ),
-                    }} name={"ticks"} component={T}/>
+                    }} name={"ticks"} component={Ts}/>
 
                     <Drawer.Screen options={{
                         drawerLabel: t("Start"),

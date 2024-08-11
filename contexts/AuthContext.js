@@ -117,7 +117,7 @@ export const AuthProvider = ({children}) => {
             })
         } catch (error) {
             console.log(error)
-            alert(t("Something went wrong, please try again"))
+            alert(i18next.t("Something went wrong, please try again"))
         }
     };
 

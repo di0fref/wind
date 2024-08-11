@@ -14,12 +14,14 @@ import {Button} from "../../components/button";
 import {CirclePlus} from "lucide-react-native";
 import {useAuth} from "../../contexts/AuthContext";
 import {useTranslation} from "react-i18next";
-import { Badge, BadgeText } from "@/components/badge";
+import {Badge, BadgeText} from "@/components/badge";
 
 export default function Tickets() {
     const [refreshing, setRefreshing] = useState(false);
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFilteredTickets] = useState([])
+
+    const [offset, setOffset] = useState(0);
 
     const isFocused = useIsFocused();
     const [showOverlay, setShowOverlay] = useState(false)
@@ -37,67 +39,91 @@ export default function Tickets() {
         setMineOnly(val)
     }
 
+
+    const getTickets = () => {
+
+        api.get("/api/tickets", {
+            params: {
+                offset: offset,
+                mineOnly: mineOnly
+            }
+        }).then(res => {
+            console.log(JSON.stringify(res.data, null, 2))
+            setOffset(prevState => prevState + 1)
+            setTickets(res.data)
+
+            console.log(JSON.stringify(tickets, null, 2))
+
+        })
+    }
+
+
     const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-
-        setMineOnly(await getSecureData("mineOnly"))
-
-        try {
-            api.get(`/api/tickets`, {timeout: 900}).then((response) => {
-                setTickets(response.data)
-            }).catch(error => {
-                if (error.response && error.response.status === 401) {
-                    logout().then(res => {
-                        nav.navigate("login")
-                    })
-                }
-
-            }).finally(() => {
-                setRefreshing(false);
-            })
-        } catch (error) {
-            console.log(JSON.stringify(error, null, 2))
-        }
+        // setRefreshing(true);
+        //
+        // setMineOnly(await getSecureData("mineOnly"))
+        //
+        // try {
+        //     api.get(`/api/tickets`, {timeout: 900}).then((response) => {
+        //         setTickets(response.data)
+        //     }).catch(error => {
+        //         if (error.response && error.response.status === 401) {
+        //             logout().then(res => {
+        //                 nav.navigate("login")
+        //             })
+        //         }
+        //
+        //     }).finally(() => {
+        //         setRefreshing(false);
+        //     })
+        // } catch (error) {
+        //     console.log(JSON.stringify(error, null, 2))
+        // }
     }, []);
 
 
-
-    const filtered =  useMemo(() => {
-        return mineOnly?tickets?.filter(ticket => ticket.user_id === user.id):tickets
-    },[mineOnly, isFocused, tickets])
+    // const filtered = useMemo(() => {
+    //     return mineOnly ? tickets?.filter(ticket => ticket.user_id === user.id) : tickets
+    // }, [mineOnly, isFocused, tickets])
 
     useEffect(() => {
-        console.log(JSON.stringify(filtered.length, null, 2))
-    }, [mineOnly]);
+        console.log(JSON.stringify("Tickets", null, 2))
+        getTickets()
+    }, []);
+
+    // useEffect(() => {
+    //     getTickets()
+    // }, [mineOnly]);
 
     useEffect(() => {
         console.log(JSON.stringify("Tickets", null, 2))
 
-        isFocused && onRefresh()
+        isFocused && getTickets()
     }, [isFocused]);
 
-    if (filtered?.length > 0) {
-        return (
-            <View className={"h-full flex-1 bg-neutral-100"}>
-                <MainView onRefresh={onRefresh} bg={"#eee"}>
+    // if (filteredTickets?.length > 0) {
+    return (
+        <View className={"h-full flex-1 bg-neutral-100"}>
+            <MainView onRefresh={onRefresh} bg={"#eee"}>
 
-                    {/*<OnlyMineCheckBox val={mineOnly} setVal={setMineCheckBox}/>*/}
-                    {/*<NewTickerButton/>*/}
-                    {filtered?.map(ticket => <Ticket key={ticket.id} data={ticket}/>)}
-                    {/*<Overlay show={showOverlay} text={t("Updating...")}/>*/}
-                </MainView>
-            </View>
-        )
-    } else {
-        return (
-            <MainView onRefresh={onRefresh}>
-                <View className={"flex-1 justify-center h-full"}>
-                    <Text className={`${defaultText} text-center font-bold mb-4`}>{t("No tickets to show.")}</Text>
-                    <Text className={`${defaultText} text-center`}>{t("Pull down to update.")}</Text>
-                </View>
+                {/*<OnlyMineCheckBox val={mineOnly} setVal={setMineCheckBox}/>*/}
+                {/*<NewTickerButton/>*/}
+                {tickets?.map(ticket => <Ticket key={Math.random()} data={ticket}/>)}
+                {/*<Overlay show={showOverlay} text={t("Updating...")}/>*/}
+                {/*<Button onPress={getTickets}>Load more</Button>*/}
             </MainView>
-        )
-    }
+        </View>
+    )
+    // } else {
+    //     return (
+    //         <MainView onRefresh={onRefresh}>
+    //             <View className={"flex-1 justify-center h-full"}>
+    //                 <Text className={`${defaultText} text-center font-bold mb-4`}>{t("No tickets to show.")}</Text>
+    //                 <Text className={`${defaultText} text-center`}>{t("Pull down to update.")}</Text>
+    //             </View>
+    //         </MainView>
+    //     )
+    // }
 }
 
 function OnlyMineCheckBox({val, setVal}) {
@@ -162,5 +188,5 @@ export function Ticket({data}) {
 }
 
 export const TicketBadge = () => {
-    return <Badge variant={"warning"} text="New" />;
+    return <Badge variant={"warning"} text="New"/>;
 };
