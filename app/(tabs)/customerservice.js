@@ -5,6 +5,8 @@ import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {CircleChevronDown, CircleChevronUp} from "lucide-react-native";
 import Animated from 'react-native-reanimated';
+import {Button} from "../../components/button";
+import {useNavigation} from "expo-router";
 
 export default function Customerservice() {
 
@@ -12,6 +14,7 @@ export default function Customerservice() {
     const [booking, showBooking] = useState(false)
     const [reception, showReception] = useState(false)
     const [service, showService] = useState(false)
+    const nav = useNavigation();
 
     const {t} = useTranslation();
     return (
@@ -64,6 +67,11 @@ export default function Customerservice() {
                 <Text className={`${defaultText}`}>Telefontid</Text>
                 <Text className={`${defaultText}`}>Måndag - Söndag 07.00 - 21.00</Text>
             </View>
+
+            <Button className={"my-4"} variant={"success"}>
+                <Text className={"text-white font-bold"}>Skapa ärende</Text>
+            </Button>
+
 
         </MainView>
     )

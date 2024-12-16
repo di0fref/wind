@@ -113,7 +113,7 @@ export default function CheckInOutForm({data, link, action, useLangField, setIsD
                                     <View>
                                         <TextInput style={{marginTop: 20}} value={message}
                                                    onChangeText={e => setMessage(e)}
-                                                   placeholder={t("Please enter a comment")}
+                                                   placeholder={t("Please leave a comment")}
                                                    mode={"outlined"}
                                                    multiline={true}/>
                                         <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 15}}>
@@ -123,7 +123,7 @@ export default function CheckInOutForm({data, link, action, useLangField, setIsD
                                             {/*}} mode={"contained"}>{t("Skip")}</Button>*/}
 
                                             <Button onPress={yesFormHandler} style={{
-                                                width: "40%",
+                                                width: "100%",
                                             }} variant={"success"}>{t("Save")}</Button>
                                         </View>
                                     </View>

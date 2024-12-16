@@ -176,18 +176,18 @@ export default function Modalticket() {
                             <Chip text={data.status}/>
                         ) : (
                             <>
-                            {/*<Select value={status} onValueChange={setStatus} items={selectStatusValues}/>*/}
-                            <View style={{ width: "100%" }}>
+                            <Select value={status} onValueChange={setStatus} items={selectStatusValues}/>
+                            {/*<View style={{ width: "100%" }}>*/}
 
-                            <Picker itemStyle={{ width: 250 }}
-                                    selectedValue={selectedLanguage}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        setSelectedLanguage(itemValue)
-                                    }>
-                                    <Picker.Item label="Java" value="java" />
-                                    <Picker.Item label="JavaScript" value="js" />
-                                </Picker>
-                            </View>
+                            {/*<Picker itemStyle={{ width: 250 }}*/}
+                            {/*        selectedValue={selectedLanguage}*/}
+                            {/*        onValueChange={(itemValue, itemIndex) =>*/}
+                            {/*            setSelectedLanguage(itemValue)*/}
+                            {/*        }>*/}
+                            {/*        <Picker.Item label="Java" value="java" />*/}
+                            {/*        <Picker.Item label="JavaScript" value="js" />*/}
+                            {/*    </Picker>*/}
+                            {/*</View>*/}
                             </>
                         )}
 

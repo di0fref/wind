@@ -18,7 +18,6 @@ export default function Checkout() {
 
     const get = async () => {
         api.get("/api/list/checkout").then((res) => {
-            console.log(JSON.stringify("get", null, 2))
             setList(res.data)
         })
     }

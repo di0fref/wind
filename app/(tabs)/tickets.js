@@ -82,7 +82,7 @@ export default function Tickets() {
                 <MainView onRefresh={onRefresh} bg={"#eee"}>
 
                     {/*<OnlyMineCheckBox val={mineOnly} setVal={setMineCheckBox}/>*/}
-                    {/*<NewTickerButton/>*/}
+                    <NewTickerButton/>
                     {filtered?.map(ticket => <Ticket key={ticket.id} data={ticket}/>)}
                     {/*<Overlay show={showOverlay} text={t("Updating...")}/>*/}
                 </MainView>

@@ -18,6 +18,7 @@ import Tickets from "./tickets";
 import Customerservice from "./customerservice";
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ts from "./ts";
+import Ordermodal from "./ordermodal";
 
 const Drawer = createDrawerNavigator();
 
@@ -51,13 +52,21 @@ export default function DrawerLayout() {
             {isSignedIn ? (
                 <>
 
+                    {/*<Drawer.Screen options={{*/}
+                    {/*    drawerLabel: t("T"),*/}
+                    {/*    title: t("T"),*/}
+                    {/*    drawerIcon: ({color, focused}) => (*/}
+                    {/*        <House/>*/}
+                    {/*    ),*/}
+                    {/*}} name={"ticks"} component={Ts}/>*/}
+
                     <Drawer.Screen options={{
-                        drawerLabel: t("T"),
-                        title: t("T"),
+                        drawerLabel: t("Ärende"),
+                        title: t("Ärende"),
                         drawerIcon: ({color, focused}) => (
                             <House/>
                         ),
-                    }} name={"ticks"} component={Ts}/>
+                    }} name={"ordermodal"} component={Ordermodal}/>
 
                     <Drawer.Screen options={{
                         drawerLabel: t("Start"),

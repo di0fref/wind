@@ -130,12 +130,15 @@ export default function HomeScreen() {
                             <Text className={`${defaultText} text-center`}>{t("Are you ready to check in?")}</Text>
                             <Text className={`${defaultText} leading-6 text-center mt-4 mb-12`}>{t("Open the camera by clicking the button below. Point the camera at the QR code on the inside of the front door.")}</Text>
                         </View>
-                        <Button variant={"info"} onPress={QRScanned}>Scan</Button>
-
                         <View>
                             <Button className={"mb-4"} variant={"info"} onPress={() => setShowCamera(true)}>
                                 {t("Open Camera")}
                             </Button>
+                        </View>
+                        <View>
+                            <TouchableOpacity  onPress={QRScanned}>
+                                <Text className={"text-center text-blue-800 text-bold mt-8"}>Simulera QR Scan</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </MainView>
