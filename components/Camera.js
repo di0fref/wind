@@ -9,6 +9,7 @@ export default function Camera({cancelClicked, QRScanned}) {
 
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
+    const [hasScanned, setHasScanned] = useState(false);
 
     // const {t} = useTranslation()
     const nav = useNavigation()
@@ -28,26 +29,18 @@ export default function Camera({cancelClicked, QRScanned}) {
     }
 
     const onBarcodeScanned = (result) => {
-        QRScanned(result)
+        setHasScanned(true)
+        QRScanned(JSON.parse(atob(result.data)))
     }
 
     return (
-
-        // <View style={{flex: 1, alignContent: "center", justifyContent: "space-between"}}>
         <View style={{flex: 1}}>
             <CameraView BarcodeBounds={{size: 50}} style={{flex: 1}}
                         barcodeScannerSettings={{
                             barcodeTypes: ["qr"],
-                        }} onBarcodeScanned={onBarcodeScanned}>
+                        }} onBarcodeScanned={hasScanned ? undefined : onBarcodeScanned}>
             </CameraView>
-            {/*</View>*/}
             <View className={"p-4 bg-black"}>
-                {/*<Button onPress={e => {*/}
-                {/*    cancelClicked();*/}
-                {/*    nav.navigate("checkin")*/}
-                {/*}}>*/}
-                {/*    {t("CHECK IN")}*/}
-                {/*</Button>*/}
                 <Button className={"mb-8"} variant={"destructive"} onPress={cancelClicked}>
                     {t("Cancel")}
                 </Button>

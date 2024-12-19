@@ -18,7 +18,7 @@ export default function HomeScreen() {
     const {user, role, isSignedIn, me} = useAuth()
     const [showCamera, setShowCamera] = useState(false);
     const [permission, requestPermission] = useCameraPermissions();
-const ref = useNavigationContainerRef();
+    const ref = useNavigationContainerRef();
     const nav = useRouter()
     const {t} = useTranslation()
     // const theme = useTheme()
@@ -39,23 +39,27 @@ const ref = useNavigationContainerRef();
     }, []);
 
     useEffect(() => {
-        console.log(isSignedIn);
-        if(!isSignedIn && ref.isReady()) {
+        if (!isSignedIn && ref.isReady()) {
             nav.navigate("login")
         }
     }, [isSignedIn, ref]);
 
     const QRScanned = (result) => {
-        try {
-            api.post('/api/qrscanned', {house_id: 1})
-                .then((res) => {
-                    me()
-                    nav.navigate("checkin")
-                }).catch((error) => {
-                console.log(JSON.stringify(error.response, null, 2));
-            })
-        } catch (err) {
-            console.log("Error 2: ", err)
+        if (!result.house_id) {
+            setShowCamera(false)
+            Alert.alert("Error", "Invalid QR code, please try again.")
+        } else {
+            try {
+                api.post('/api/qrscanned', {house_id: result.house_id })
+                    .then((res) => {
+                        me()
+                        nav.navigate("checkin")
+                    }).catch((error) => {
+                    console.log(JSON.stringify(error.response, null, 2));
+                })
+            } catch (err) {
+                console.log("Error 2: ", err)
+            }
         }
         setShowCamera(false)
     }
@@ -141,7 +145,7 @@ const ref = useNavigationContainerRef();
                             </Button>
                         </View>
                         <View>
-                            <TouchableOpacity  onPress={QRScanned}>
+                            <TouchableOpacity onPress={() =>QRScanned({house_id:1})}>
                                 <Text className={"text-center text-blue-800 text-bold mt-8"}>Simulera QR Scan</Text>
                             </TouchableOpacity>
                         </View>
@@ -207,10 +211,13 @@ function RegisteredOn() {
     const {t} = useTranslation()
 
     const getStage = () => {
-        switch (user.stage){
-            case "scanned": return t("Arrived")
-            case "checked_in": return t("Checked-In")
-            case "checked_out": return t("Checked-Out")
+        switch (user.stage) {
+            case "scanned":
+                return t("Arrived")
+            case "checked_in":
+                return t("Checked-In")
+            case "checked_out":
+                return t("Checked-Out")
         }
     }
 

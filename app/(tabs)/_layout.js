@@ -82,17 +82,17 @@ export default function DrawerLayout() {
                 }}
             />
 
-            <Drawer.Screen name={"t"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"ts"} options={{drawerItemStyle: {display: "none"}}}/>
-            {/*<Drawer.Screen name={"login"} options={{drawerItemStyle: {display: "none"}}}/>*/}
-            <Drawer.Screen name={"checkin"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"tickets"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkout"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"ordermodal"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkindone"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkoutdone"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"manual"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"roleselector"} options={{drawerItemStyle: {display: "none"}}}/>
+            {/*<Drawer.Screen name={"t"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"ts"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*/!*<Drawer.Screen name={"login"} options={{drawerItemStyle: {display: "none"}}}/>*!/*/}
+            {/*<Drawer.Screen name={"checkin"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"tickets"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"checkout"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"ordermodal"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"checkindone"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"checkoutdone"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"manual"} options={{drawerItemStyle: {display: "none"}}}/>*/}
+            {/*<Drawer.Screen name={"roleselector"} options={{drawerItemStyle: {display: "none"}}}/>*/}
 
         </Drawer>
     )
