@@ -68,9 +68,9 @@ export default function Customerservice() {
                 <Text className={`${defaultText}`}>Måndag - Söndag 07.00 - 21.00</Text>
             </View>
 
-            <Button className={"my-4"} variant={"success"}>
-                <Text className={"text-white font-bold"}>Skapa ärende</Text>
-            </Button>
+            {/*<Button className={"my-4"} variant={"success"}>*/}
+            {/*    <Text className={"text-white font-bold"}>Skapa ärende</Text>*/}
+            {/*</Button>*/}
 
 
         </MainView>

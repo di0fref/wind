@@ -7,10 +7,10 @@ import {api} from "../../lib/http-common";
 import {defaultText} from "../../assets/styles/default";
 import Camera from "../../components/Camera";
 import {useCameraPermissions} from "expo-camera";
-import {Link, useNavigation} from "expo-router";
+import {Link, useNavigationContainerRef, useRouter} from "expo-router";
 import {useFonts} from "expo-font";
 import {useTranslation} from "react-i18next";
-import * as NAV from "expo-router/build/global-state/routing";
+// import * as NAV from "expo-router/build/global-state/routing";
 
 
 export default function HomeScreen() {
@@ -18,8 +18,8 @@ export default function HomeScreen() {
     const {user, role, isSignedIn, me} = useAuth()
     const [showCamera, setShowCamera] = useState(false);
     const [permission, requestPermission] = useCameraPermissions();
-
-    const nav = useNavigation()
+const ref = useNavigationContainerRef();
+    const nav = useRouter()
     const {t} = useTranslation()
     // const theme = useTheme()
 
@@ -27,18 +27,23 @@ export default function HomeScreen() {
         setShowCamera(false)
     }
 
-    // const [loaded] = useFonts({
-    //     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
-    // });
-
     useEffect(() => {
         console.log(JSON.stringify("Home", null, 2))
         // nav.navigate("ticks")
+        // console.log(user);
+        // console.log(isSignedIn);
+
+        // if(!isSignedIn && ref.isReady()) {
+        //     nav.navigate("login")
+        // }
     }, []);
 
-    // useEffect(() => {
-    //     console.log("Stage change: ", user.stage)
-    // }, [user.stage]);
+    useEffect(() => {
+        console.log(isSignedIn);
+        if(!isSignedIn && ref.isReady()) {
+            nav.navigate("login")
+        }
+    }, [isSignedIn, ref]);
 
     const QRScanned = (result) => {
         try {
