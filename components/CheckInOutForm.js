@@ -99,7 +99,7 @@ export default function CheckInOutForm({data, link, action, useLangField, setIsD
                     <MainView>
                         <View style={{flex: 1, alignContent: "center", justifyContent: "space-between"}}>
                             <View>
-                                <View style={{marginBottom: 20}}>
+                                <View style={{marginBottom: 30}}>
                                     <Stepper key={categoryIndex} list={list} current={categoryIndex}/>
                                 </View>
 
@@ -131,18 +131,21 @@ export default function CheckInOutForm({data, link, action, useLangField, setIsD
 
                             </View>
 
-                            <View style={{marginBottom: 30, alignContent: "center", justifyContent: "center", flexDirection: "row", gap: 80}}>
+                            <View style={{marginBottom: 30, alignContent: "center", justifyContent: "center", flexDirection: "row", gap: 130}}>
 
                                 {!showTextArea &&
                                     <>
-                                        <Button onPress={noHandler} variant={"info"} style={{
-                                            backgroundColor: "#b65348",
-                                            width: 100,
+                                        <Button onPress={noHandler} variant={"destructive"} style={{
+                                            // backgroundColor: "#b65348",
+                                            width: 70,
+                                            height:70,
+                                            borderRadius: 100
                                         }}>{t("No")}</Button>
-                                        <Button onPress={yesHandler} variant={"info"} style={{
-                                            backgroundColor: "#5ab686",
-                                            width: 100,
-                                        }}>{t("Yes")}</Button>
+                                        <Button onPress={yesHandler} variant={"success"} style={{
+                                            // backgroundColor: "#5ab686",
+                                            width: 70,
+                                            height:70,
+                                            borderRadius: 100                                        }}>{t("Yes")}</Button>
                                     </>
                                 }
                             </View>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useColorScheme, Text, TouchableOpacity} from "react-native";
 import {useAuth} from "../../contexts/AuthContext";
 // import {Drawer} from "expo-router/drawer";
@@ -20,7 +20,7 @@ import Customerservice from "./customerservice";
 // import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ts from "./ts";
 import Ordermodal from "./ordermodal";
-import {useRouter, useNavigation, useNavigationContainerRef} from 'expo-router';
+import {useRouter, useNavigation, useNavigationContainerRef, Tabs, useRootNavigation} from 'expo-router';
 
 // const Drawer = createDrawerNavigator();
 // const navigationRef = createNavigationContainerRef();
@@ -30,71 +30,105 @@ export default function DrawerLayout() {
     const {isSignedIn, role, user} = useAuth()
     const nav = useRouter()
     const {t} = useTranslation()
-    const ref = useNavigationContainerRef();
+    const rootNavigation = useRootNavigation();
+
+    const [isNavigationReady, setNavigationReady] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = rootNavigation?.addListener("state", (event) => {
+            setNavigationReady(true);
+        });
+        return function cleanup() {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, [rootNavigation]);
 
 
-
+    useEffect(() => {
+        if (!isNavigationReady) {
+            return;
+        }
+        else{
+            if(!isSignedIn) {
+                nav.navigate("login");
+            }
+        }
+    }, [isNavigationReady, isSignedIn]);
 
     return (
-        <Drawer>
+        <Tabs
 
-            <Drawer.Screen
+            screenOptions={{
+                headerShown: true,
+                headerRight: () => {
+                    return (
+                        <TouchableOpacity className={"mr-2"} onPress={() => nav.navigate("settingsmodal")}>
+                            <Cog/>
+                        </TouchableOpacity>)
+                }
+            }}>
+
+
+
+            <Tabs.Screen
                 name="index" // This is the name of the page and must match the url from root
                 options={{
-                    drawerLabel: t("Start"),
+                    tabBarLabel: t("Start"),
                     title: t("Start"),
-                    drawerIcon: ({color, focused}) => (
-                        <House/>
+                    tabBarIcon: ({color, focused}) => (
+                        <House color={color}/>
                     ),
-                    drawerItemStyle: {display: isSignedIn?"block":"none"}
+                    tabBarItemStyle: {display: isSignedIn ? "block" : "none"}
                 }}
             />
-            <Drawer.Screen
+            <Tabs.Screen
                 name="login" // This is the name of the page and must match the url from root
                 options={{
-                    drawerLabel: t("Login"),
+                    tabBarLabel: t("Login"),
                     title: t("Login"),
-                    drawerIcon: ({color, focused}) => (
-                        <House/>
+                    tabBarIcon: ({color, focused}) => (
+                        <House color={color}/>
                     ),
-                    drawerItemStyle: {display: isSignedIn?"none":"block"}
+                    tabBarItemStyle: {display: isSignedIn ? "none" : "block"}
                 }}
             />
-            <Drawer.Screen
+            <Tabs.Screen
                 name="customerservice" // This is the name of the page and must match the url from root
                 options={{
-                    drawerLabel: t("Customer Service"),
-                    title: t("Start"),
-                    drawerIcon: ({color, focused}) => (
-                        <CircleHelp/>
+                    tabBarLabel: t("Customer Service"),
+                    title: t("Customer Service"),
+                    tabBarIcon: ({color, focused}) => (
+                        <CircleHelp color={color}/>
                     ),
                 }}
             />
 
-            <Drawer.Screen
+            <Tabs.Screen
                 name="settings" // This is the name of the page and must match the url from root
                 options={{
-                    drawerLabel: t("Settings"),
-                    title: t("Start"),
-                    drawerIcon: ({color, focused}) => (
-                        <Cog/>
+                    tabBarLabel: t("Settings"),
+                    title: t("Settings"),
+                    tabBarIcon: ({color, focused}) => (
+                        <Cog color={color}/>
                     ),
                 }}
             />
 
-            <Drawer.Screen name={"t"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"ts"} options={{drawerItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"t"} options={{tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"ts"} options={{tabBarItemStyle: {display: "none"}}}/>
             {/*<Drawer.Screen name={"login"} options={{drawerItemStyle: {display: "none"}}}/>*/}
-            <Drawer.Screen name={"checkin"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"tickets"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkout"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"ordermodal"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkindone"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"checkoutdone"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"manual"} options={{drawerItemStyle: {display: "none"}}}/>
-            <Drawer.Screen name={"roleselector"} options={{drawerItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"checkin"} options={{title: t("Check In"), tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"tickets"} options={{tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"checkout"} options={{title: t("Check Out"), tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"ordermodal"} options={{tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"checkindone"} options={{title: t("Check-In-Done"), tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"checkoutdone"} options={{title: t("Check-Out-Done"), tabBarItemStyle: {display: "none"}}}/>
+            <Tabs.Screen name={"manual"} options={{tabBarItemStyle: {display: "none"}}}/>
+            {/*<Tabs.Screen name={"roleselector"} options={{title: t("RoleSelector"), tabBarItemStyle: {display: "none"}}}/>*/}
 
-        </Drawer>
+        </Tabs>
     )
     // return (
     // <Drawer.Navigator

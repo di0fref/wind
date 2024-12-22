@@ -38,12 +38,12 @@ const ref = useNavigationContainerRef();
         // }
     }, []);
 
-    useEffect(() => {
-        console.log(isSignedIn);
-        if(!isSignedIn && ref.isReady()) {
-            nav.navigate("login")
-        }
-    }, [isSignedIn, ref]);
+    // useEffect(() => {
+    //     console.log(ref.isReady());
+    //     if(!isSignedIn) {
+    //         nav.navigate("login")
+    //     }
+    // }, [isSignedIn, ref]);
 
     const QRScanned = (result) => {
         try {
@@ -220,8 +220,8 @@ function RegisteredOn() {
             <Text className={`${defaultText} font-bold `}>
                 {t("Status")}: <Text className={`${defaultText} font-normal`}>{getStage()}</Text>
             </Text>
-            <Text className={`${defaultText}`}>{user?.house_session?.house?.address_street}</Text>
-            <Text className={`${defaultText}`}>{user?.house_session?.house?.address_postalcode + ", " + user?.house_session?.house?.address_city}</Text>
+            <Text className={`${defaultText}`}>{user?.house_session?.house?.street}</Text>
+            <Text className={`${defaultText}`}>{user?.house_session?.house?.postalcode + ", " + user?.house_session?.house?.city}</Text>
         </View>
     )
 }
