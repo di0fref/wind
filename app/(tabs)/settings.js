@@ -45,7 +45,7 @@ export default function Setting() {
             <View style={{flex: 1, alignContent: "center", justifyContent: "space-between"}}>
                 <View>
 
-                    <Text style={{textAlign: "center", fontWeight: "bold", marginBottom: 20}}>{t("Settings")}</Text>
+                    {/*<Text style={{textAlign: "center", fontWeight: "bold", marginBottom: 20}}>{t("Settings")}</Text>*/}
 
                     {/*<View style={{marginBottom:20,display: "flex", flexDirection: "row", justifyContent: "space-between"}}>*/}
                     {/*    <Text variant={"bodyMedium"}>{t("Dark Mode")}</Text>*/}
@@ -65,11 +65,7 @@ export default function Setting() {
                             </TouchableOpacity>
                         }
 
-                        {/*{isSignedIn && <Button onPress={() => {*/}
-                        {/*    logout()*/}
-                        {/*    router.goBack()*/}
-                        {/*}} icon={"cog"}>Log out</Button>*/}
-                        {/*}*/}
+
 
                     </View>
                 </View>

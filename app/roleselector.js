@@ -1,9 +1,9 @@
 import {TouchableOpacity, View, Text} from "react-native";
-import MainView from "../../components/MainView";
+import MainView from "../components/MainView";
 import { useRouter, useNavigation } from 'expo-router';
-import {useAuth} from "../../contexts/AuthContext";
-import {defaultText} from "../../assets/styles/default";
-import {Button} from "../../components/button";
+import {useAuth} from "../contexts/AuthContext";
+import {defaultText} from "../assets/styles/default";
+import {Button} from "../components/button";
 import {useTranslation} from "react-i18next";
 import {StackActions} from "@react-navigation/native";
 
@@ -17,7 +17,7 @@ export default function Roleselector() {
     const setRole = (val) => {
         setUserRole(val)
         setSelectingRole(false)
-        router.navigate("index")
+        router.goBack()
     }
 
 
@@ -38,7 +38,7 @@ export default function Roleselector() {
                 ))}
                 <Button className={"mt-4"} onPress={() => {
                     logout()
-                    // router.goBack()
+                    router.goBack()
                 }} variant={"destructive"}>{t("Cancel")}</Button>
             </View>
         </MainView>

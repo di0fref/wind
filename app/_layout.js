@@ -2,7 +2,7 @@ import 'react-native-reanimated';
 import "@/global.css";
 import {DarkTheme, DefaultTheme, ThemeProvider, useTheme} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
-import {Stack, useNavigation} from 'expo-router';
+import {Stack, useNavigation, useRouter} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import "../global.css"
@@ -19,6 +19,9 @@ import i18n from "i18next";
 import {useTranslation} from "react-i18next";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
+import { useRootNavigationState, Redirect } from 'expo-router';
+import {Keyboard as rootNavigation} from "react-native-web";
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -26,6 +29,7 @@ export default function RootLayout() {
 
     const {colorScheme} = useColorScheme();
     const nav = useNavigation()
+
 
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -47,6 +51,8 @@ export default function RootLayout() {
     }, [])
 
 
+
+
     useEffect(() => {
         if (loaded) {
             SplashScreen.hideAsync();
@@ -66,7 +72,7 @@ export default function RootLayout() {
                 <AuthProvider>
                     <Stack>
                         <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-                        {/*<Stack.Screen name="roleselector" options={{headerTitle: "Select role", presentation: "modal", headerShown: true}}/>*/}
+                        <Stack.Screen name="roleselector" options={{headerTitle: "Select role", presentation: "modal", headerShown: true}}/>
                         {/*<Stack.Screen name="modalticket" options={{*/}
                         {/*    headerBackTitle: t("Back"),*/}
                         {/*    headerTitle: t("Ticket"),*/}
@@ -80,7 +86,7 @@ export default function RootLayout() {
                         {/*}}/>*/}
                         <Stack.Screen name="+not-found"/>
                         <Stack.Screen name="register" options={{headerTitle: t("Register"), headerBackTitle: t("Back"), headerShown: true}}/>
-                        <Stack.Screen name="settingsmodal" options={{headerShown: false, presentation: 'modal', title: t("Settings")}}/>
+                        <Stack.Screen name="settingsmodal" options={{headerShown: true, presentation: 'modal', title: t("Settings")}}/>
                         {/*<Stack.Screen name="newticket" options={{*/}
                         {/*    headerBackTitle: t("Back"),*/}
                         {/*    headerRight: () => (*/}
