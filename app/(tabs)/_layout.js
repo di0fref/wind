@@ -102,6 +102,7 @@ export default function DrawerLayout() {
                     tabBarIcon: ({color, focused}) => (
                         <CircleHelp color={color}/>
                     ),
+                    tabBarItemStyle: {display: isSignedIn ? "block" : "none"}
                 }}
             />
 

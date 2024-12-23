@@ -31,7 +31,7 @@ export default function SettingModal() {
                         setShowOverlay(true)
                         logout(setShowOverlay).then(() => {
                             setShowOverlay(false)
-                            // nav.navigate("login")
+                            nav.goBack()
                         })
                     }
                 }
